@@ -20,4 +20,4 @@ To properly configure OpenShift and related images user needs to specify these p
 * image.kaas.builder.s2i - tag for S2I image, for example buil from https://github.com/kiegroup/submarine-cloud/tree/master/s2i/kaas-quarkus-centos-s2i
 * image.kaas.runtime - Tag for runtime image, for example built from https://github.com/kiegroup/submarine-cloud/tree/master/s2i/kaas-quarkus-centos
 
-These properties need to be set as system property or they can be placed in test.properties file (with appropriate values). 
+These properties need to be set as system property or they can be placed in test.properties file (with appropriate values). test.properties file can be placed next to pom.xml. It is added to .gitignore.

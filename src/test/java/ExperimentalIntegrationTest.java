@@ -2,7 +2,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import io.restassured.RestAssured;
-import org.hamcrest.Matchers;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -14,10 +14,12 @@ public class ExperimentalIntegrationTest {
 
     @BeforeClass
     public static void setUp() throws MalformedURLException {
-        URL assetsUrl = new URL("https://github.com/mswiderski/sample-kaas-assets");
+        URL assetsUrl = new URL("https://github.com/kiegroup/submarine-examples");
+        String gitContextDir = "jbpm-quarkus-example";
 
-        project = Project.create("ksuta-subm2");
-        kaasDeloyment = Deployer.deployKaasUsingS2iAndWait(project, assetsUrl);
+        String randomProjectName = RandomStringUtils.randomAlphanumeric(4).toLowerCase();
+        project = Project.create(randomProjectName);
+        kaasDeloyment = Deployer.deployKaasUsingS2iAndWait(project, assetsUrl, gitContextDir);
     }
 
     @AfterClass
@@ -26,13 +28,13 @@ public class ExperimentalIntegrationTest {
     }
 
     @Test
-    public void testSomething() {
-        RestAssured.given()
-            .header("Content-Type", "application/json")
-        .when()
-            .post(kaasDeloyment.getRouteUrl().toExternalForm() + "/extras")
-        .then()
-            .statusCode(200)
-            .body("id", Matchers.greaterThan(0));
+    public void testOrdersCrud() {
+      RestAssured.given()
+          .header("Content-Type", "application/json")
+          .body("{\"approver\" : \"john\", \"order\" : {\"orderNumber\" : \"12345\", \"shipped\" : false}}")
+      .when()
+          .post(kaasDeloyment.getRouteUrl().toExternalForm() + "/orders")
+      .then()
+          .statusCode(200);
     }
 }

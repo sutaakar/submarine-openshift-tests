@@ -11,6 +11,13 @@ import io.fabric8.openshift.api.model.ImageStream;
 
 public class Deployer {
 
+    /**
+     * Deploy KaaS application into the project using S2I and wait until application starts.
+     *
+     * @param project Project where the application will be deployed to.
+     * @param assetsUrl URL pointing to the GIT repo containing Kie assets.
+     * @return Deployment object containing reference to the deployed application URL.
+     */
     public static HttpDeployment deployKaasUsingS2iAndWait(Project project, URL assetsUrl) {
         OpenShiftBinary masterBinary = OpenShifts.masterBinary(project.getName());
 
@@ -26,6 +33,13 @@ public class Deployer {
         return new HttpDeployment(project, runtimeImageBuildName);
     }
 
+    /**
+     * Build the KaaS application image and push it to an image stream.
+     *
+     * @param project
+     * @param assetsUrl URL pointing to the GIT repo containing Kie assets.
+     * @return Name of the image stream containing application image.
+     */
     private static String buildKaasS2iApplication(Project project, URL assetsUrl) {
         String s2iImageStreamName = "kaas-builder-s2i-image";
         String s2iImageStreamTag = "1.0";
@@ -46,6 +60,13 @@ public class Deployer {
         return resultImageStreamName;
     }
 
+    /**
+     * Build runtime image of the KaaS application and push it to an image stream.
+     *
+     * @param project
+     * @param s2iResultImageStreamName Image stream name containing KaaS application created by S2I build.
+     * @return Name of the image stream containing runtime image.
+     */
     private static String buildKaasS2iRuntimeImage(Project project, String s2iResultImageStreamName) {
         String finalImageStreamName = "kaas-builder-image";
         String finalImageStreamTag = "1.0";

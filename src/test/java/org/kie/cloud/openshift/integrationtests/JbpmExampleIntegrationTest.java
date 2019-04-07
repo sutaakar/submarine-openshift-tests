@@ -1,3 +1,4 @@
+package org.kie.cloud.openshift.integrationtests;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -6,8 +7,11 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.kie.cloud.openshift.Deployer;
+import org.kie.cloud.openshift.HttpDeployment;
+import org.kie.cloud.openshift.Project;
 
-public class ExperimentalIntegrationTest {
+public class JbpmExampleIntegrationTest {
 
     private static Project project;
     private static HttpDeployment kaasDeloyment;

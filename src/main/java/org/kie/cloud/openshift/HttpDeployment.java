@@ -1,3 +1,5 @@
+package org.kie.cloud.openshift;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -15,10 +17,10 @@ public class HttpDeployment {
 
     public URL getRouteUrl() {
         Route httpRoute = project.getMaster().getRoutes().stream()
-                                         .filter(route -> route.getSpec().getTo().getName().equals(serviceName))
-                                         .filter(route -> route.getSpec().getTls() == null)
-                                         .findAny()
-                                         .orElseThrow(() -> new RuntimeException("No HTTP route found for service " + serviceName));
+                                 .filter(route -> route.getSpec().getTo().getName().equals(serviceName))
+                                 .filter(route -> route.getSpec().getTls() == null)
+                                 .findAny()
+                                 .orElseThrow(() -> new RuntimeException("No HTTP route found for service " + serviceName));
         String routeUrl = "http://" + httpRoute.getSpec().getHost() + ":80";
         try {
             return new URL(routeUrl);

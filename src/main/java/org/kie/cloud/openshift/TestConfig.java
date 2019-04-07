@@ -1,3 +1,5 @@
+package org.kie.cloud.openshift;
+
 import cz.xtf.core.config.XTFConfig;
 
 public class TestConfig {

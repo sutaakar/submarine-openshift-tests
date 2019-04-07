@@ -1,3 +1,5 @@
+package org.kie.cloud.openshift;
+
 import cz.xtf.core.openshift.OpenShift;
 import cz.xtf.core.openshift.OpenShifts;
 

@@ -19,9 +19,21 @@ public class Deployer {
      * @return Deployment object containing reference to the deployed application URL.
      */
     public static HttpDeployment deployKaasUsingS2iAndWait(Project project, URL assetsUrl) {
+        return deployKaasUsingS2iAndWait(project, assetsUrl, null);
+    }
+
+    /**
+     * Deploy KaaS application into the project using S2I and wait until application starts.
+     *
+     * @param project Project where the application will be deployed to.
+     * @param assetsUrl URL pointing to the GIT repo containing Kie assets.
+     * @param gitContextDir Context directory of GIT repo containing Kie assets.
+     * @return Deployment object containing reference to the deployed application URL.
+     */
+    public static HttpDeployment deployKaasUsingS2iAndWait(Project project, URL assetsUrl, String gitContextDir) {
         OpenShiftBinary masterBinary = OpenShifts.masterBinary(project.getName());
 
-        String s2iResultImageStreamName = buildKaasS2iApplication(project, assetsUrl);
+        String s2iResultImageStreamName = buildKaasS2iApplication(project, assetsUrl, gitContextDir);
         String runtimeImageBuildName = buildKaasS2iRuntimeImage(project, s2iResultImageStreamName);
 
         masterBinary.execute("new-app", runtimeImageBuildName + ":latest");
@@ -40,7 +52,7 @@ public class Deployer {
      * @param assetsUrl URL pointing to the GIT repo containing Kie assets.
      * @return Name of the image stream containing application image.
      */
-    private static String buildKaasS2iApplication(Project project, URL assetsUrl) {
+    private static String buildKaasS2iApplication(Project project, URL assetsUrl, String gitContextDir) {
         String s2iImageStreamName = "kaas-builder-s2i-image";
         String s2iImageStreamTag = "1.0";
         String buildName = "kaas-s2i-build";
@@ -53,6 +65,10 @@ public class Deployer {
         s2iConfigBuilder.setOutput(resultImageStreamName);
         s2iConfigBuilder.gitSource(assetsUrl.toExternalForm());
         s2iConfigBuilder.sti().fromImageStream(project.getName(), s2iImageStreamName, s2iImageStreamTag);
+
+        if (gitContextDir != null && !gitContextDir.isEmpty()) {
+            s2iConfigBuilder.gitContextDir(gitContextDir);
+        }
 
         project.getMaster().createBuildConfig(s2iConfigBuilder.build());
         project.getMaster().startBuild(buildName);

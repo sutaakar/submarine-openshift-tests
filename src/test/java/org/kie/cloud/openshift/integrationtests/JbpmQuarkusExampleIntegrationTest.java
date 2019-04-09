@@ -10,8 +10,9 @@ import org.junit.Test;
 import org.kie.cloud.openshift.Deployer;
 import org.kie.cloud.openshift.HttpDeployment;
 import org.kie.cloud.openshift.Project;
+import org.kie.cloud.openshift.TestConfig;
 
-public class JbpmExampleIntegrationTest {
+public class JbpmQuarkusExampleIntegrationTest {
 
     private static Project project;
     private static HttpDeployment kaasDeloyment;
@@ -22,8 +23,8 @@ public class JbpmExampleIntegrationTest {
         String gitContextDir = "jbpm-quarkus-example";
 
         String randomProjectName = RandomStringUtils.randomAlphanumeric(4).toLowerCase();
-        project = Project.create(randomProjectName);
-        kaasDeloyment = Deployer.deployKaasUsingS2iAndWait(project, assetsUrl, gitContextDir);
+        project = Project.create("jbpm-example-" + randomProjectName);
+        kaasDeloyment = Deployer.deployKaasUsingS2iAndWait(project, assetsUrl, gitContextDir, TestConfig.getKaasS2iQuarkusBuilderImage(), TestConfig.getKaasQuarkusRuntimeImage());
     }
 
     @AfterClass

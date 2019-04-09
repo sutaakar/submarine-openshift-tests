@@ -4,15 +4,25 @@ import cz.xtf.core.config.XTFConfig;
 
 public class TestConfig {
 
-    private static final String IMAGE_KAAS_BUILDER_S2I = "image.kaas.builder.s2i";
-    private static final String IMAGE_KAAS_RUNTIME = "image.kaas.runtime";
+    private static final String IMAGE_KAAS_QUARKUS_BUILDER_S2I = "image.kaas.quarkus.builder.s2i";
+    private static final String IMAGE_KAAS_QUARKUS_RUNTIME = "image.kaas.quarkus.runtime";
+    private static final String IMAGE_KAAS_SPRINGBOOT_BUILDER_S2I = "image.kaas.springboot.builder.s2i";
+    private static final String IMAGE_KAAS_SPRINGBOOT_RUNTIME = "image.kaas.springboot.runtime";
 
-    public static String getKaasS2iBuilderImage() {
-        return getMandatoryProperty(IMAGE_KAAS_BUILDER_S2I);
+    public static String getKaasS2iQuarkusBuilderImage() {
+        return getMandatoryProperty(IMAGE_KAAS_QUARKUS_BUILDER_S2I);
     }
 
-    public static String getKaasRuntimeImage() {
-        return getMandatoryProperty(IMAGE_KAAS_RUNTIME);
+    public static String getKaasQuarkusRuntimeImage() {
+        return getMandatoryProperty(IMAGE_KAAS_QUARKUS_RUNTIME);
+    }
+
+    public static String getKaasS2iSpringBootBuilderImage() {
+        return getMandatoryProperty(IMAGE_KAAS_SPRINGBOOT_BUILDER_S2I);
+    }
+
+    public static String getKaasSpringBootRuntimeImage() {
+        return getMandatoryProperty(IMAGE_KAAS_SPRINGBOOT_RUNTIME);
     }
 
     private static String getMandatoryProperty(String propertyName) {
